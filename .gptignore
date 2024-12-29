@@ -1,0 +1,6 @@
+node_modules/
+bun.lockb
+package-lock.json
+README.md
+LICENSE
+.gitignore
