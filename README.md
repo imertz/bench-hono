@@ -12,8 +12,8 @@ A performance benchmark comparison between Express.js running on Node.js and Hon
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/express-hono-benchmark.git
-cd express-hono-benchmark
+git clone https://github.com/imertz/bench-hono.git
+cd bench-hono
 
 # Install dependencies
 npm install
