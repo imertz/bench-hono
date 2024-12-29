@@ -39,6 +39,6 @@ app.post("/users", async (c) => {
 });
 
 export default {
-  port: 3001,
+  port: 3032,
   fetch: app.fetch,
 };

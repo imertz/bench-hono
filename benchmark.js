@@ -38,7 +38,7 @@ async function runBenchmark(baseUrl, scenario) {
     method: scenario.method,
     headers: scenario.headers,
     body: scenario.body,
-    title: `${baseUrl.includes("3000") ? "Express" : "Hono"} - ${
+    title: `${baseUrl.includes("3031") ? "Express" : "Hono"} - ${
       scenario.name
     }`,
   });
@@ -53,10 +53,10 @@ async function compareBenchmarks() {
     console.log(`Testing: ${scenario.name}`);
 
     // Test Express.js
-    const expressResult = await runBenchmark("http://localhost:3000", scenario);
+    const expressResult = await runBenchmark("http://localhost:3031", scenario);
 
     // Test Hono.js
-    const honoResult = await runBenchmark("http://localhost:3001", scenario);
+    const honoResult = await runBenchmark("http://localhost:3032", scenario);
 
     console.log("\nResults:");
     console.log("\nExpress.js:");

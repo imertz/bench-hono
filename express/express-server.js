@@ -40,6 +40,6 @@ app.post("/users", (req, res) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("Express server running on port 3000");
+app.listen(3031, () => {
+  console.log("Express server running on port 3031");
 });
