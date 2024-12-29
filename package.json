@@ -1,0 +1,39 @@
+{
+  "name": "bench-hono",
+  "version": "1.0.0",
+  "description": "Performance benchmark comparison between Express.js (Node) and Hono.js (Bun)",
+  "type": "module",
+  "scripts": {
+    "start:express": "node express/express-server.js",
+    "start:hono": "bun run hono/hono-server.js",
+    "benchmark": "node benchmark.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "benchmark",
+    "express",
+    "hono",
+    "bun",
+    "node",
+    "performance"
+  ],
+  "author": "Ioannis Mertzanis",
+  "license": "MIT",
+  "dependencies": {
+    "autocannon": "^8.0.0",
+    "express": "^4.21.2",
+    "hono": "^4.6.15"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "bun": ">=1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imertz/bench-hono.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imertz/bench-hono/issues"
+  },
+  "homepage": "https://github.com/imertz/bench-hono#readme"
+}
