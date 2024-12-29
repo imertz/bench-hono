@@ -62,35 +62,73 @@ The benchmark tests four different scenarios:
    - JSON body parsing
    - Request body validation
 
-## Sample Results
+## Benchmark Results
 
-```
-Testing: Simple Response
-Express.js:
-Requests/sec: 18,880
-Latency (ms): 4.68
-Throughput (MB/sec): 4.70
+Results from different hardware configurations:
 
-Hono.js:
-Requests/sec: 116,337
-Latency (ms): 0.15
-Throughput (MB/sec): 16.53
-```
+### OVH VPS (1 CPU, 2GB RAM)
 
-## Project Structure
+| Scenario         | Framework | Requests/sec | Latency (ms) | Throughput (MB/sec) |
+| ---------------- | --------- | ------------ | ------------ | ------------------- |
+| Simple Response  | Express   | 1,897.70     | 52.21        | 0.47                |
+|                  | Hono      | 9,043.21     | 10.65        | 1.16                |
+| Query Parameters | Express   | 1,955.46     | 50.61        | 0.68                |
+|                  | Hono      | 8,978.80     | 10.72        | 2.03                |
+| Route Parameters | Express   | 2,038.30     | 48.53        | 0.58                |
+|                  | Hono      | 9,339.21     | 10.25        | 1.52                |
+| POST with Body   | Express   | 1,577.40     | 62.89        | 0.50                |
+|                  | Hono      | 9,222.40     | 10.40        | 1.79                |
 
-- `express-server.js` - Express.js server implementation
-- `hono-server.js` - Hono.js server implementation
-- `benchmark.js` - Benchmark implementation using autocannon
-- `package.json` - Project configuration and dependencies
+### Hetzner ARM (2 CPU, 4GB RAM)
 
-## Contributing
+| Scenario         | Framework | Requests/sec | Latency (ms) | Throughput (MB/sec) |
+| ---------------- | --------- | ------------ | ------------ | ------------------- |
+| Simple Response  | Express   | 3,790.55     | 25.87        | 0.94                |
+|                  | Hono      | 18,732.41    | 4.92         | 2.39                |
+| Query Parameters | Express   | 3,466.82     | 28.34        | 1.20                |
+|                  | Hono      | 19,278.41    | 4.78         | 4.36                |
+| Route Parameters | Express   | 3,862.70     | 25.41        | 1.10                |
+|                  | Hono      | 18,676.41    | 4.95         | 3.05                |
+| POST with Body   | Express   | 2,923.50     | 33.72        | 0.92                |
+|                  | Hono      | 20,316.80    | 4.39         | 3.95                |
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Raspberry Pi 4 Model B (4GB RAM)
+
+| Scenario         | Framework | Requests/sec | Latency (ms) | Throughput (MB/sec) |
+| ---------------- | --------- | ------------ | ------------ | ------------------- |
+| Simple Response  | Express   | 712.90       | 139.60       | 0.18                |
+|                  | Hono      | 5,035.40     | 19.66        | 0.64                |
+| Query Parameters | Express   | 850.30       | 117.01       | 0.30                |
+|                  | Hono      | 6,078.80     | 16.19        | 1.37                |
+| Route Parameters | Express   | 965.50       | 102.89       | 0.27                |
+|                  | Hono      | 6,065.20     | 16.25        | 0.99                |
+| POST with Body   | Express   | 682.00       | 145.78       | 0.22                |
+|                  | Hono      | 5,428.40     | 18.03        | 1.06                |
+
+## Key Findings
+
+1. Performance Advantage:
+
+   - Hono.js consistently outperforms Express.js across all hardware configurations
+   - The performance gap widens on lower-power devices
+   - Raspberry Pi shows the largest relative difference (6.3x-8.0x faster)
+
+2. Hardware Impact:
+
+   - Both frameworks perform best on ARM architecture (Hetzner)
+   - Express.js shows more sensitivity to hardware limitations
+   - Hono.js maintains more consistent performance across different hardware
+
+3. Operation Types:
+
+   - POST operations with body parsing show the biggest performance gap
+   - Query parameter handling is consistently efficient in Hono
+   - Simple responses and route parameters show similar ratios within each setup
+
+4. Latency Patterns:
+   - Express latency increases dramatically on lower-power hardware
+   - Hono maintains relatively stable latency even on Raspberry Pi
+   - ARM hardware shows the best latency for both frameworks
 
 ## License
 
