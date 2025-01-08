@@ -1,7 +1,15 @@
 import express from "express";
-const app = express();
+import Database from "better-sqlite3";
 
-// Enable JSON body parsing
+const app = express();
+const db = new Database("db.sqlite", { readonly: true });
+// db.pragma("journal_mode = WAL");
+
+// Prepare statements
+const getAllUsers = db.prepare("SELECT * FROM users");
+const getUserById = db.prepare("SELECT * FROM users WHERE id = ?");
+const getPaginatedUsers = db.prepare("SELECT * FROM users LIMIT ? OFFSET ?");
+
 app.use(express.json());
 
 // Simple response
@@ -38,6 +46,26 @@ app.post("/users", (req, res) => {
     email,
     created: new Date().toISOString(),
   });
+});
+
+app.get("/db/users", (req, res) => {
+  const users = getAllUsers.all();
+  res.json(users);
+});
+
+app.get("/db/users/:id", (req, res) => {
+  const user = getUserById.get(req.params.id);
+  if (!user) return res.status(404).json({ error: "User not found" });
+  res.json(user);
+});
+
+app.get("/db/users/paginated", (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+
+  const users = getPaginatedUsers.all(limit, offset);
+  res.json(users);
 });
 
 app.listen(3031, () => {

@@ -1,4 +1,37 @@
 import autocannon from "autocannon";
+import BetterSqlite3 from "better-sqlite3";
+
+// Add new database scenario
+const DB_SIZE = 100000;
+
+// Setup function to create and populate databases
+async function setupDatabases() {
+  // Setup Bun:SQLite database
+  const db = new BetterSqlite3("db.sqlite");
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY,
+      name TEXT,
+      email TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  // Populate databases
+  console.log("Populating databases with 100,000 records...");
+
+  const bunInsert = db.prepare("INSERT INTO users (name, email) VALUES (?, ?)");
+
+  db.transaction(() => {
+    for (let i = 0; i < DB_SIZE; i++) {
+      bunInsert.run(`User${i}`, `user${i}@example.com`);
+    }
+  })();
+
+  db.close();
+
+  console.log("Databases populated successfully!");
+}
 
 const scenarios = [
   {
@@ -27,6 +60,22 @@ const scenarios = [
     headers: {
       "content-type": "application/json",
     },
+  },
+  // Add new database scenarios
+  {
+    name: "Database Select All",
+    method: "GET",
+    path: "/db/users",
+  },
+  {
+    name: "Database Select Single",
+    method: "GET",
+    path: "/db/users/150000", // Middle record
+  },
+  {
+    name: "Database Select with Limit",
+    method: "GET",
+    path: "/db/users/paginated?page=1&limit=10",
   },
 ];
 
@@ -84,4 +133,9 @@ async function compareBenchmarks() {
   }
 }
 
-compareBenchmarks().catch(console.error);
+async function main() {
+  await setupDatabases();
+  await compareBenchmarks();
+}
+
+main().catch(console.error);

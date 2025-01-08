@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "autocannon": "^8.0.0",
+    "better-sqlite3": "^11.7.2",
     "express": "^4.21.2",
     "hono": "^4.6.15"
   },
